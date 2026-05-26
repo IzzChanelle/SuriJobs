@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SuriJobs — Home</title>
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/navbar.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* ---- HOME DISCOVERY SECTIONS ---- */
+        .home-discovery { display: flex; flex-direction: column; gap: 32px; }
+
+        .discovery-section h2 {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--red);
+            margin-bottom: 14px;
+            letter-spacing: -0.2px;
+        }
+
+        /* Horizontal scroll row */
+        .scroll-row {
+            display: flex;
+            gap: 14px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            scrollbar-width: none;
+        }
+        .scroll-row::-webkit-scrollbar { display: none; }
+
+        /* Saved item card */
+        .saved-card {
+            flex: 0 0 220px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--r-lg);
+            overflow: hidden;
+            cursor: pointer;
+            transition: box-shadow var(--t), transform var(--t);
+        }
+        .saved-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+        .saved-card-img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            display: block;
+            background: var(--bg);
+        }
+        .saved-card-body { padding: 10px 12px; }
+        .saved-card-body h4 { font-size: 0.875rem; font-weight: 700; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .saved-card-body p { font-size: 0.75rem; color: var(--text-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .saved-card-tag {
+            display: inline-block;
+            margin-top: 6px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: var(--r-full);
+            color: white;
+        }
+        .saved-card-tag.job     { background: var(--green-dark); }
+        .saved-card-tag.market  { background: var(--red); }
+        .saved-card-tag.service { background: var(--gold); color: #1a1a1a; }
+
+        /* Trending job card — wider card with image top */
+        .trending-card {
+            flex: 0 0 300px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--r-lg);
+            overflow: hidden;
+            cursor: pointer;
+            transition: box-shadow var(--t), transform var(--t);
+        }
+        .trending-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+        .trending-card-img {
+            width: 100%; height: 160px;
+            object-fit: cover;
+            display: block;
+            background: var(--bg);
+        }
+        .trending-card-body { padding: 12px 14px; }
+        .trending-card-body h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 2px; }
+        .trending-card-company { font-size: 0.78rem; font-weight: 600; color: var(--green-dark); margin-bottom: 2px; }
+        .trending-card-meta { font-size: 0.72rem; color: var(--text-dim); }
+
+        /* Market card */
+        .market-mini-card {
+            flex: 0 0 220px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--r-lg);
+            overflow: hidden;
+            cursor: pointer;
+            transition: box-shadow var(--t), transform var(--t);
+        }
+        .market-mini-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+        .market-mini-card-img {
+            width: 100%; height: 130px;
+            object-fit: cover;
+            display: block;
+            background: var(--bg);
+        }
+        .market-mini-card-body { padding: 10px 12px; }
+        .market-mini-card-body h4 { font-size: 0.875rem; font-weight: 700; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .market-price {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: white;
+            background: var(--red);
+            display: inline-block;
+            padding: 2px 9px;
+            border-radius: var(--r-full);
+            margin-top: 5px;
+        }
+
+        /* Profile strip at top */
+        .home-profile-strip {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--r-lg);
+            padding: 16px 20px;
+            margin-bottom: 24px;
+        }
+        .home-profile-strip img {
+            width: 52px; height: 52px;
+            border-radius: var(--r-full);
+            object-fit: cover;
+            border: 2px solid var(--border);
+        }
+        .home-profile-strip .strip-info { flex: 1; }
+        .home-profile-strip h3 { font-size: 1rem; font-weight: 700; margin-bottom: 2px; }
+        .home-profile-strip p { font-size: 0.78rem; color: var(--text-dim); }
+        .home-profile-strip .strip-right { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+        .strip-stats { display: flex; gap: 16px; }
+        .strip-stat { text-align: center; }
+        .strip-stat .num { font-size: 1.1rem; font-weight: 800; color: var(--green-dark); }
+        .strip-stat .lbl { font-size: 0.65rem; color: var(--text-muted); }
+
+        .progress-bar-sm { height: 6px; background: var(--border); border-radius: 99px; width: 140px; overflow: hidden; }
+        .progress-bar-sm-fill { height: 100%; background: var(--green-dark); border-radius: 99px; transition: width 0.6s ease; }
+
+        .section-empty { color: var(--text-muted); font-size: 0.85rem; padding: 10px 0; }
+    </style>
+</head>
+<body>
+
+<div class="app-layout">
+    <div class="main-wrap">
+        <main class="main-content">
+
+            <div class="title-bar">
+                <h1 id="welcomeTitle">Welkom terug!</h1>
+                <p class="subtitle" id="welcomeSubtitle">Klaar om je volgende kans te vinden?</p>
+            </div>
+
+            <!-- Profile strip -->
+            <div class="home-profile-strip">
+                <img id="homeProfilePic" src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="">
+                <div class="strip-info">
+                    <h3 id="homeProfileName">—</h3>
+                    <p id="homeProfileEmail">—</p>
+                    <div style="display:flex; align-items:center; gap:8px; margin-top:6px;">
+                        <div class="progress-bar-sm"><div class="progress-bar-sm-fill" id="homeProgressFill"></div></div>
+                        <span style="font-size:0.72rem; color:var(--text-dim);" id="completionPct">0%</span>
+                    </div>
+                </div>
+                <div class="strip-stats">
+                    <div class="strip-stat"><div class="num" id="statApps">0</div><div class="lbl">Sollicitaties</div></div>
+                    <div class="strip-stat"><div class="num" id="statSaved">0</div><div class="lbl">Opgeslagen</div></div>
+                    <div class="strip-stat"><div class="num" id="statListings">0</div><div class="lbl">Mijn items</div></div>
+                </div>
+            </div>
+
+            <!-- Discovery sections -->
+            <div class="home-discovery">
+
+                <!-- Saved items -->
+                <div class="discovery-section scroll-reveal">
+                    <h2>Opgeslagen Items</h2>
+                    <div class="scroll-row" id="savedRow">
+                        <div class="section-empty">Laden...</div>
+                    </div>
+                </div>
+
+                <!-- Trending vacatures -->
+                <div class="discovery-section scroll-reveal">
+                    <h2>Trending vacatures</h2>
+                    <div class="scroll-row" id="trendingRow">
+                        <div class="section-empty">Laden...</div>
+                    </div>
+                </div>
+
+                <!-- Nieuw op markt -->
+                <div class="discovery-section scroll-reveal">
+                    <h2>Nieuw op markt</h2>
+                    <div class="scroll-row" id="marketRow">
+                        <div class="section-empty">Laden...</div>
+                    </div>
+                </div>
+
+            </div>
+
+        </main>
+    </div>
+</div>
+
+<!-- Hidden elements homepage.js still references -->
+<span id="welcomeSubtitle" style="display:none"></span>
+
+<script src="js/constants.js"></script>
+<script src="js/api.js"></script>
+<script src="js/topnav.js"></script>
+<script src="js/homepage.js"></script>
+
+<div class="bottom-nav" id="bottomNav" style="display:none;"></div>
+<script>
+(function(){
+    // Clone topnav links into bottom nav for mobile
+    function buildBottomNav(){
+        var nav = document.getElementById('bottomNav');
+        if(!nav) return;
+        var links = document.querySelectorAll('.topnav-links .topnav-link');
+        if(!links.length){ setTimeout(buildBottomNav, 100); return; }
+        nav.innerHTML = '';
+        links.forEach(function(l){
+            nav.appendChild(l.cloneNode(true));
+        });
+    }
+    if(document.readyState === 'loading'){
+        document.addEventListener('DOMContentLoaded', buildBottomNav);
+    } else { buildBottomNav(); setTimeout(buildBottomNav, 120); }
+})();
+</script>
+</body>
+</html>

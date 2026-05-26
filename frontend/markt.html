@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SuriJobs — Markt</title>
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/navbar.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="app-layout">
+
+    
+
+    <div class="main-wrap">
+
+        
+
+        <main class="main-content">
+
+            <div class="page-header">
+                <button class="filter-btn" id="filterBtn"><span></span><span></span><span></span></button>
+                <h1>Markt</h1>
+                <button class="refresh-btn" id="refreshBtn" title="Verversen">↻</button>
+                <button class="btn-primary" id="openProductModal">+ Product plaatsen</button>
+            </div>
+
+            <div class="search-box" style="max-width:100%; margin-bottom:16px;">
+                <span class="search-icon"><span class="page-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span></span>
+                <input type="text" id="marketSearch" placeholder="Zoek producten...">
+                <button id="clearBtn">×</button>
+            </div>
+
+            <!-- Collapsible filter bar -->
+            <div class="filter-sidebar" id="filterSidebar">
+                <div class="filter-sidebar-inner">
+                    <div class="filter-group">
+                        <h3>Sortering</h3>
+                        <label><input type="radio" name="sort" value="newest" checked> Nieuwste eerst</label>
+                        <label><input type="radio" name="sort" value="oldest"> Oudste eerst</label>
+                    </div>
+                    <div class="filter-group">
+                        <h3>Categorie</h3>
+                        <div class="filter-labels"></div>
+                    </div>
+                    <div class="filter-group">
+                        <h3>Conditie</h3>
+                        <div class="filter-labels"></div>
+                    </div>
+                    <div class="filter-group">
+                        <h3>District</h3>
+                        <div class="filter-labels"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="marketGrid" class="market-grid"></div>
+
+        </main>
+    </div>
+</div>
+
+<!-- Add product modal -->
+<div class="product-modal" id="productModal">
+    <div class="product-modal-content">
+        <button class="close-product-modal" id="closeProductModal">×</button>
+        <h2>Product plaatsen</h2>
+        <input id="productName" type="text" placeholder="Naam *" class="form-input">
+        <input id="productPrice" type="text" placeholder="Prijs (bv. SRD 500) *" class="form-input">
+        <textarea id="productDescription" placeholder="Beschrijving" class="form-input"></textarea>
+        <select id="productCategory" class="form-input"></select>
+        <select id="productCondition" class="form-input"></select>
+        <select id="productDistrict" class="form-input"></select>
+        <input id="productImage" type="text" placeholder="Afbeelding URL (optioneel)" class="form-input">
+        <input id="productImageFile" type="file" accept="image/*" class="form-input">
+        <button id="addProductSubmit" class="btn-primary" style="justify-content:center;">Plaatsen</button>
+    </div>
+</div>
+
+<script src="js/constants.js"></script>
+<script src="js/api.js"></script>
+<script src="js/topnav.js"></script>
+<script src="js/markt.js"></script>
+
+<div class="bottom-nav" id="bottomNav" style="display:none;"></div>
+<script>
+(function(){
+    // Clone topnav links into bottom nav for mobile
+    function buildBottomNav(){
+        var nav = document.getElementById('bottomNav');
+        if(!nav) return;
+        var links = document.querySelectorAll('.topnav-links .topnav-link');
+        if(!links.length){ setTimeout(buildBottomNav, 100); return; }
+        nav.innerHTML = '';
+        links.forEach(function(l){
+            nav.appendChild(l.cloneNode(true));
+        });
+    }
+    if(document.readyState === 'loading'){
+        document.addEventListener('DOMContentLoaded', buildBottomNav);
+    } else { buildBottomNav(); setTimeout(buildBottomNav, 120); }
+})();
+</script>
+</body>
+</html>

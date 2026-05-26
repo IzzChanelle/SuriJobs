@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SuriJobs — Meldingen</title>
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/navbar.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="app-layout">
+
+    
+
+    <div class="main-wrap">
+
+        
+
+        <main class="main-content">
+
+            <div class="page-header">
+                <h1>Meldingen</h1>
+                <button class="btn-secondary" id="markAllReadBtn">✓ Alles gelezen</button>
+            </div>
+
+            <div class="tabs-section">
+                <button class="tab-btn active-tab" data-tab="all">Alles</button>
+                <button class="tab-btn" data-tab="unread">Ongelezen</button>
+                <button class="tab-btn" data-tab="important">Belangrijk</button>
+            </div>
+
+            <div id="notificationsContainer" class="notifications-container"></div>
+
+        </main>
+    </div>
+</div>
+
+<script src="js/constants.js"></script>
+<script src="js/api.js"></script>
+<script src="js/topnav.js"></script>
+<script src="js/notifications.js"></script>
+
+<div class="bottom-nav" id="bottomNav" style="display:none;"></div>
+<script>
+(function(){
+    // Clone topnav links into bottom nav for mobile
+    function buildBottomNav(){
+        var nav = document.getElementById('bottomNav');
+        if(!nav) return;
+        var links = document.querySelectorAll('.topnav-links .topnav-link');
+        if(!links.length){ setTimeout(buildBottomNav, 100); return; }
+        nav.innerHTML = '';
+        links.forEach(function(l){
+            nav.appendChild(l.cloneNode(true));
+        });
+    }
+    if(document.readyState === 'loading'){
+        document.addEventListener('DOMContentLoaded', buildBottomNav);
+    } else { buildBottomNav(); setTimeout(buildBottomNav, 120); }
+})();
+</script>
+</body>
+</html>

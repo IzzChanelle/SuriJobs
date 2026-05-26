@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SuriJobs — Diensten</title>
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/navbar.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="app-layout">
+    <div class="main-wrap">
+        <main class="main-content">
+
+            <div class="page-header">
+                <button class="filter-btn" id="filterBtn"><span></span><span></span><span></span></button>
+                <h1>Diensten</h1>
+                <div class="view-buttons">
+                    <button id="gridViewBtn" title="Grid">▦</button>
+                    <button id="singleViewBtn" title="Lijst">≡</button>
+                </div>
+                <button class="refresh-btn">↻</button>
+                <button class="btn-primary" id="openDienstModal">+ Dienst plaatsen</button>
+            </div>
+
+            <div class="search-box" style="max-width:100%; margin-bottom:16px;">
+                <span class="search-icon"><span class="page-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span></span>
+                <input type="text" id="searchInput" placeholder="Zoek diensten...">
+                <button id="clearBtn">×</button>
+            </div>
+
+            <!-- Collapsible filter bar -->
+            <div class="filter-sidebar" id="filterSidebar">
+                <div class="filter-sidebar-inner">
+                    <div class="filter-group">
+                        <h3>Sortering</h3>
+                        <label><input type="radio" name="sort" value="newest" checked> Nieuwste eerst</label>
+                        <label><input type="radio" name="sort" value="oldest"> Oudste eerst</label>
+                    </div>
+                    <div class="filter-group">
+                        <h3>Branche</h3>
+                        <div class="filter-labels"></div>
+                    </div>
+                    <div class="filter-group">
+                        <h3>District</h3>
+                        <div class="filter-labels"></div>
+                    </div>
+                    <div class="filter-group">
+                        <h3>Prijs</h3>
+                        <div class="filter-labels"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="postsContainer" class="posts-container"></div>
+
+        </main>
+    </div>
+</div>
+
+<!-- Detail modal -->
+<div class="post-modal" id="postModal">
+    <div class="modal-content">
+        <button class="close-modal" id="closeModal">×</button>
+        <div class="modal-image"><img id="modalImg" alt=""></div>
+        <div class="modal-info">
+            <h2 id="modalTitle">—</h2>
+            <p class="full-description" id="modalDescription"></p>
+            <div class="modal-buttons">
+                <button class="contact-btn">Contact</button>
+                <button class="info-btn" onclick="document.getElementById('postModal').classList.remove('active')">Sluit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add dienst modal -->
+<div class="post-modal" id="dienstModal">
+    <div class="modal-content" style="max-width:540px;">
+        <button class="close-modal" id="closeDienstModal">×</button>
+        <div class="modal-info">
+            <h2 style="margin-bottom:20px; font-size:1.2rem;"><span class="page-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span> Dienst plaatsen</h2>
+            <div class="profile-form">
+                <div class="form-group full-width">
+                    <label>Naam / Titel *</label>
+                    <input id="dienstName" type="text" class="form-input" placeholder="Bv. Naomi Nails, Mike Photography">
+                </div>
+                <div class="form-group full-width">
+                    <label>Beschrijving</label>
+                    <textarea id="dienstDescription" class="form-input" placeholder="Wat bied je aan?"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Branche *</label>
+                    <select id="dienstBranche" class="form-input"></select>
+                </div>
+                <div class="form-group">
+                    <label>District</label>
+                    <select id="dienstDistrict" class="form-input"></select>
+                </div>
+                <div class="form-group">
+                    <label>Prijsklasse</label>
+                    <select id="dienstPrice" class="form-input"></select>
+                </div>
+                <div class="form-group">
+                    <label>Contact (tel / email)</label>
+                    <input id="dienstContact" type="text" class="form-input" placeholder="+597 ...">
+                </div>
+                <div class="form-group full-width">
+                    <label>Afbeelding URL (optioneel)</label>
+                    <input id="dienstImage" type="text" class="form-input" placeholder="https://...">
+                </div>
+            </div>
+            <div class="modal-buttons" style="margin-top:20px;">
+                <button id="submitDienst" class="btn-primary" style="flex:1;justify-content:center;padding:11px;">Plaatsen</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="js/constants.js"></script>
+<script src="js/api.js"></script>
+<script src="js/topnav.js"></script>
+<script src="js/diensten.js"></script>
+
+<div class="bottom-nav" id="bottomNav" style="display:none;"></div>
+<script>
+(function(){
+    // Clone topnav links into bottom nav for mobile
+    function buildBottomNav(){
+        var nav = document.getElementById('bottomNav');
+        if(!nav) return;
+        var links = document.querySelectorAll('.topnav-links .topnav-link');
+        if(!links.length){ setTimeout(buildBottomNav, 100); return; }
+        nav.innerHTML = '';
+        links.forEach(function(l){
+            nav.appendChild(l.cloneNode(true));
+        });
+    }
+    if(document.readyState === 'loading'){
+        document.addEventListener('DOMContentLoaded', buildBottomNav);
+    } else { buildBottomNav(); setTimeout(buildBottomNav, 120); }
+})();
+</script>
+</body>
+</html>
